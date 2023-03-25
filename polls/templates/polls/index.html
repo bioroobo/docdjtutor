@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% if latest_question_list %}
+    <ul>
+    {% for question in latest_question_list %}
+        {% comment %}
+        это строка рабочая:
+        <li><a href="/polls/{{ question.id }}/">{{ question.question_text }}</a></li>
+        но вместо неё надо писать так (проверено: рабочий код): удаление жестких ссылок:
+        <li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li>
+
+        но ещё более правильно установить пространство имен приложения в файле urls.py:
+        app_name = 'polls'
+        и тогда надо писать так:
+        {% endcomment %}
+        <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
+</body>
+</html>
